@@ -46,7 +46,7 @@ namespace EventStore.Projections.Core.Tests.Services.projections_manager.managed
 
 
         [Test, ExpectedException(typeof (ArgumentException))]
-        public void empty_guid_throws_invali_argument_exception()
+        public void empty_guid_throws_invalid_argument_exception()
         {
             new ManagedProjection(
                 Guid.NewGuid(),
@@ -65,7 +65,7 @@ namespace EventStore.Projections.Core.Tests.Services.projections_manager.managed
         }
 
         [Test, ExpectedException(typeof (ArgumentException))]
-        public void empty_guid_throws_invali_argument_exception2()
+        public void empty_guid_throws_invalid_argument_exception2()
         {
             new ManagedProjection(
                 Guid.NewGuid(),

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EventStore.Common.Utils;
 using EventStore.Core.Messages;
 using EventStore.Core.Messaging;
@@ -39,7 +38,7 @@ namespace EventStore.Projections.Core.Tests.Services.projections_manager
             yield return
                 new ProjectionManagementMessage.Command.Delete(
                     new PublishEnvelope(_bus), _projectionName,
-                    ProjectionManagementMessage.RunAs.System, true, true);
+                    ProjectionManagementMessage.RunAs.System, true, true, true);
         }
 
         [Test, Category("v8")]

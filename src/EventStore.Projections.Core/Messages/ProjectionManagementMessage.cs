@@ -288,14 +288,16 @@ namespace EventStore.Projections.Core.Messages
                 private readonly string _name;
                 private readonly bool _deleteCheckpointStream;
                 private readonly bool _deleteStateStream;
+                private readonly bool _deleteEmittedStreams;
 
                 public Delete(
-                    IEnvelope envelope, string name, RunAs runAs, bool deleteCheckpointStream, bool deleteStateStream)
+                    IEnvelope envelope, string name, RunAs runAs, bool deleteCheckpointStream, bool deleteStateStream, bool deleteEmittedStreams)
                     : base(envelope, runAs)
                 {
                     _name = name;
                     _deleteCheckpointStream = deleteCheckpointStream;
                     _deleteStateStream = deleteStateStream;
+                    _deleteEmittedStreams = deleteEmittedStreams;
                 }
 
                 public string Name
@@ -311,6 +313,11 @@ namespace EventStore.Projections.Core.Messages
                 public bool DeleteStateStream
                 {
                     get { return _deleteStateStream; }
+                }
+
+                public bool DeleteEmittedStreams
+                {
+                    get { return _deleteEmittedStreams; }
                 }
             }
 

@@ -41,7 +41,7 @@ namespace EventStore.Projections.Core.Tests.Services.projections_manager
             yield return
                 new ProjectionManagementMessage.Command.Delete(
                     new PublishEnvelope(_bus), _projectionName,
-                    ProjectionManagementMessage.RunAs.System, false, false);
+                    ProjectionManagementMessage.RunAs.System, false, false, false);
         }
 
         [Test, Category("v8")]

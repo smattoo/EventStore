@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Security.Principal;
 using EventStore.Common.Log;
 using EventStore.Common.Utils;
@@ -450,6 +449,10 @@ namespace EventStore.Projections.Core.Services.Management
             if (_state != ManagedProjectionState.Stopped && Mode != ProjectionMode.Transient)
                 throw new InvalidOperationException("Cannot delete a running projection");
             _lastAccessed = _timeProvider.Now;
+            if (message.DeleteEmittedStreams)
+            {
+                DeleteEmittedStreams();
+            }
             if (message.DeleteCheckpointStream)
             {
                 DeleteCheckpointStream();
@@ -458,6 +461,11 @@ namespace EventStore.Projections.Core.Services.Management
             UpdateProjectionVersion();
             SetLastReplyEnvelope(message.Envelope);
             StopUnlessPreparedOrLoaded();
+        }
+
+        private void DeleteEmittedStreams()
+        {
+            //todo
         }
 
         public void Handle(ProjectionManagementMessage.Command.Reset message)
@@ -485,6 +493,7 @@ namespace EventStore.Projections.Core.Services.Management
                         new NoopEnvelope(),
                         _name,
                         ProjectionManagementMessage.RunAs.System,
+                        false,
                         false,
                         false));
             }
@@ -718,7 +727,7 @@ namespace EventStore.Projections.Core.Services.Management
                 throw new NotSupportedException("Unsupported error code received");
         }
 
-        private void StreamDeleted(ClientMessage.DeleteStreamCompleted message, string eventStreamId)
+        private void StreamDeleted(ClientMessage.DeleteStreamCompleted message, string eventStreamId, Action onError)
         {
             if (message.Result == OperationResult.Success)
             {
@@ -732,7 +741,7 @@ namespace EventStore.Projections.Core.Services.Management
             if (message.Result == OperationResult.CommitTimeout ||
                 message.Result == OperationResult.ForwardTimeout)
             {
-                DeleteCheckpointStream();
+                onError();
             }
             else
                 throw new NotSupportedException("Unsupported error code received");
@@ -1022,7 +1031,7 @@ namespace EventStore.Projections.Core.Services.Management
                 checkpointStreamName,
                 ExpectedVersion.Any,
                 false,
-                SystemAccount.Principal), m => StreamDeleted(m, checkpointStreamName));
+                SystemAccount.Principal), m => StreamDeleted(m, checkpointStreamName, DeleteCheckpointStream));
         }
 
         private void DoDelete()

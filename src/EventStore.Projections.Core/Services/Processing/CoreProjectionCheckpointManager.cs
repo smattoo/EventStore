@@ -20,7 +20,6 @@ namespace EventStore.Projections.Core.Services.Processing
         private readonly Guid _projectionCorrelationId;
         private readonly CheckpointTag _zeroTag;
 
-
         protected ProjectionCheckpoint _currentCheckpoint;
         private ProjectionCheckpoint _closingCheckpoint;
         internal CheckpointTag _requestedCheckpointPosition;

@@ -365,7 +365,8 @@ namespace EventStore.Projections.Core.Services.Management
                             commandBody.Name,
                             commandBody.RunAs,
                             commandBody.DeleteCheckpointStream,
-                            commandBody.DeleteStateStream));
+                            commandBody.DeleteStateStream,
+                            commandBody.DeleteEmittedStreams));
                     break;
                 }
                 default:

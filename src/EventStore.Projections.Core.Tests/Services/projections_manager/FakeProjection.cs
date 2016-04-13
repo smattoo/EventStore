@@ -73,6 +73,7 @@ namespace EventStore.Projections.Core.Tests.Services.projections_manager
                 throw new Exception("failed");
             Log("ProcessEvent(" + "..." + ")");
             newState = "{\"data\": 1}";
+            newSharedState = "{\"data\": 2}";
             emittedEvents = null;
             return true;
         }
